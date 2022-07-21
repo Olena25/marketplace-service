@@ -15,4 +15,18 @@ public class MainPageController {
         return "main-page";
     }
 
+    @GetMapping("/add-user")
+    public String showAddUserPage(){
+        log.info("Showing add user page");
+
+        return "add-user";
+    }
+
+    @GetMapping("/add-product")
+    public String showAddProductPage(){
+        log.info("Showing add product page");
+
+        return "add-product";
+    }
+
 }

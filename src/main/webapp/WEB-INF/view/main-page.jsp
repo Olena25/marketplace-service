@@ -17,6 +17,18 @@
     <input type="submit" value="Display Products">
 </form>
 
+<br><br>
+
+<form action="/add-user" method="GET">
+    <input type="submit" value="Add User">
+</form>
+
+<br><br>
+
+<form action="/add-product" method="GET">
+    <input type="submit" value="Add Product">
+</form>
+
 <c:if test="${!empty users}">
 <h2>Users list</h2>
 <ul>

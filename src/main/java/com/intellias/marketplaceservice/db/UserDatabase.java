@@ -15,4 +15,8 @@ public class UserDatabase {
         return users;
     }
 
+    public void save(User user){
+        users.add(user);
+    }
+
 }
