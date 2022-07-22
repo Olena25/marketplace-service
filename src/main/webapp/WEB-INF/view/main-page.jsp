@@ -28,6 +28,14 @@
 </form>
 
 
+<br>
+
+<form action="/products/users" method="GET">
+    <input type="text" name="productId" placeholder="Product id">
+    <input type="submit" value="Display users by product">
+</form>
+
+
 <h1>Add</h1>
 
 <form action="/add-user" method="GET">
@@ -48,6 +56,8 @@
 <form action="/buy-product" method="GET">
     <input type="submit" value="Buy Product">
 </form>
+
+
 
 <c:if test="${!empty users}">
 <h2>Users list</h2>

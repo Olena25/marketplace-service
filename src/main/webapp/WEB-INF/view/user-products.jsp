@@ -9,7 +9,11 @@
 
     <ul>
         <c:forEach items="${products}" var="product">
-            <li><b>Name</b>: ${product.name} <br><b>Price </b>: ${product.price} <br></li>
+            <li>
+                <b> Id:</b> ${product.id} <br>
+                <b>Name</b>: ${product.name} <br>
+                <b>Price </b>: ${product.price} <br>
+            </li>
         </c:forEach>
     </ul>
 

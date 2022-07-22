@@ -1,11 +1,9 @@
 package com.intellias.marketplaceservice.service;
 
-import com.intellias.marketplaceservice.db.ProductDatabase;
 import com.intellias.marketplaceservice.db.UserDatabase;
 import com.intellias.marketplaceservice.dto.BuyProductDto;
 import com.intellias.marketplaceservice.dto.UserDto;
 import com.intellias.marketplaceservice.exception.NotEnoughMoneyException;
-import com.intellias.marketplaceservice.exception.ProductNotFoundException;
 import com.intellias.marketplaceservice.exception.UserNotFoundException;
 import com.intellias.marketplaceservice.exception.UserValidationException;
 import com.intellias.marketplaceservice.model.Product;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.UUID;
 
 @Service
@@ -24,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 public class UserService {
     private UserDatabase userDatabase;
-    private ProductDatabase productDatabase;
+    private ProductService productService;
 
     public List<User> findAll() {
         log.info("Searching for all users");
@@ -64,12 +61,7 @@ public class UserService {
         log.info("Buy product for userId {} and productId {}", userId, productId);
 
         User user = findById(userId);
-
-        Product product = productDatabase.findProductById(productId);
-
-        if (product == null) {
-            throw new ProductNotFoundException("Product with id " + productId + " not found");
-        }
+        Product product = productService.findById(productId);
 
         if (user.getAmountOfMoney() < product.getPrice()) {
             throw new NotEnoughMoneyException("User with id " + userId + " does not have enough money to buy product");
@@ -78,5 +70,23 @@ public class UserService {
         user.getProducts().add(product);
         long newAmountOfMoney = user.getAmountOfMoney() - product.getPrice();
         user.setAmountOfMoney(newAmountOfMoney);
+    }
+
+    public List<User> findUsersByProduct(Product product) {
+        log.info("Trying to find users by product id {}", product.getId());
+
+        List<User> users = userDatabase.findAll();
+
+        List<User> foundUsers = new ArrayList<>();
+        for (User user : users) {
+            List<Product> products = user.getProducts();
+            for (Product foundProduct : products) {
+                if (product.equals(foundProduct)) {
+                    foundUsers.add(user);
+                }
+            }
+        }
+
+        return foundUsers;
     }
 }
