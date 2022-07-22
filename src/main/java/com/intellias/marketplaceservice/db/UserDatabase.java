@@ -19,4 +19,13 @@ public class UserDatabase {
         users.add(user);
     }
 
+    public User findById(String userId) {
+        for (User user : users){
+            if (userId.equals(user.getId().toString())){
+                return user;
+            }
+        }
+        return null;
+    }
+
 }

@@ -1,17 +1,17 @@
 package com.intellias.marketplaceservice.controller;
 
+import com.intellias.marketplaceservice.dto.BuyProductDto;
 import com.intellias.marketplaceservice.dto.UserDto;
+import com.intellias.marketplaceservice.exception.UserNotFoundException;
 import com.intellias.marketplaceservice.exception.UserValidationException;
+import com.intellias.marketplaceservice.model.Product;
 import com.intellias.marketplaceservice.model.User;
 import com.intellias.marketplaceservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,5 +46,32 @@ public class UserController {
 
         return "add-user";
     }
+     @PostMapping(value = "/users/products",consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public String buyProductForUser(@ModelAttribute BuyProductDto buyProductDto, Model model){
+        try {
+            userService.buyProductForUser(buyProductDto);
+        }catch (RuntimeException e){
+            model.addAttribute("message",e.getMessage());
+
+            return "buy-product";
+        }
+
+        model.addAttribute("message", "Successfully purchased");
+
+        return "buy-product";
+     }
+      @GetMapping("/users/products")
+     public String showUserProducts(@RequestParam String userId, Model model){
+        try {
+           User user = userService.findById(userId);
+           model.addAttribute("products", user.getProducts());
+
+        } catch (UserNotFoundException e) {
+            model.addAttribute("message", e.getMessage());
+        }
+
+        return "user-products";
+     }
+
 
 }

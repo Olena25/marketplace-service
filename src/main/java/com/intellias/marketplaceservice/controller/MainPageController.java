@@ -9,24 +9,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainPageController {
 
     @GetMapping("/")
-    public String showMainPage(){
+    public String showMainPage() {
         log.info("Showing main page");
 
         return "main-page";
     }
 
     @GetMapping("/add-user")
-    public String showAddUserPage(){
+    public String showAddUserPage() {
         log.info("Showing add user page");
 
         return "add-user";
     }
 
     @GetMapping("/add-product")
-    public String showAddProductPage(){
+    public String showAddProductPage() {
         log.info("Showing add product page");
 
         return "add-product";
     }
 
+    @GetMapping("/buy-product")
+    public String showBuyProductPage() {
+        log.info("Showing buy product page");
+        return "buy-product";
+    }
 }
