@@ -34,4 +34,6 @@ public class MainPageController {
         log.info("Showing buy product page");
         return "buy-product";
     }
+
+
 }

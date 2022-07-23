@@ -44,4 +44,10 @@ public class ProductService {
 
         productDatabase.save(product);
     }
+
+    public void deleteProduct(String productId) {
+        log.info("Trying to delete product with id {}", productId);
+        Product product = findById(productId);
+        productDatabase.delete(product);
+    }
 }

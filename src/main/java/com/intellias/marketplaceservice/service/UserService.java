@@ -80,13 +80,26 @@ public class UserService {
         List<User> foundUsers = new ArrayList<>();
         for (User user : users) {
             List<Product> products = user.getProducts();
-            for (Product foundProduct : products) {
-                if (product.equals(foundProduct)) {
-                    foundUsers.add(user);
-                }
+            if (products.contains(product)) {
+                foundUsers.add(user);
             }
         }
 
         return foundUsers;
+    }
+
+    public void deleteUser(String userId) {
+        log.info("Trying to delete user with id {}", userId);
+        User user = findById(userId);
+        userDatabase.delete(user);
+    }
+
+    public void deleteProductFromUser(String productId) {
+        Product product = productService.findById(productId);
+        List<User> users = userDatabase.findAll();
+        for (User user : users) {
+            List<Product> userProducts = user.getProducts();
+            userProducts.remove(product);
+        }
     }
 }

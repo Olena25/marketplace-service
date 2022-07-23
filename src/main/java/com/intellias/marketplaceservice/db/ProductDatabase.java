@@ -31,4 +31,10 @@ public class ProductDatabase {
         return null;
     }
 
+    public void delete(Product product) {
+        products.remove(product);
+
+
+    }
+
 }

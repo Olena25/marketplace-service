@@ -61,4 +61,17 @@ public class ProductController {
         return "user-by-product";
     }
 
+    @PostMapping("/products/delete")
+    public String deleteProduct(@RequestParam String productId, Model model) {
+        try {
+            userService.deleteProductFromUser(productId);
+            productService.deleteProduct(productId);
+            model.addAttribute("productDeleteMessage", "Successfully deleted");
+        } catch (ProductNotFoundException e) {
+            model.addAttribute("productDeleteMessage", e.getMessage());
+
+        }
+        return "main-page";
+    }
+
 }

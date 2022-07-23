@@ -4,7 +4,6 @@ import com.intellias.marketplaceservice.dto.BuyProductDto;
 import com.intellias.marketplaceservice.dto.UserDto;
 import com.intellias.marketplaceservice.exception.UserNotFoundException;
 import com.intellias.marketplaceservice.exception.UserValidationException;
-import com.intellias.marketplaceservice.model.Product;
 import com.intellias.marketplaceservice.model.User;
 import com.intellias.marketplaceservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +45,13 @@ public class UserController {
 
         return "add-user";
     }
-     @PostMapping(value = "/users/products",consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public String buyProductForUser(@ModelAttribute BuyProductDto buyProductDto, Model model){
+
+    @PostMapping(value = "/users/products", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public String buyProductForUser(@ModelAttribute BuyProductDto buyProductDto, Model model) {
         try {
             userService.buyProductForUser(buyProductDto);
-        }catch (RuntimeException e){
-            model.addAttribute("message",e.getMessage());
+        } catch (RuntimeException e) {
+            model.addAttribute("message", e.getMessage());
 
             return "buy-product";
         }
@@ -59,19 +59,30 @@ public class UserController {
         model.addAttribute("message", "Successfully purchased");
 
         return "buy-product";
-     }
-      @GetMapping("/users/products")
-     public String showUserProducts(@RequestParam String userId, Model model){
+    }
+
+    @GetMapping("/users/products")
+    public String showUserProducts(@RequestParam String userId, Model model) {
         try {
-           User user = userService.findById(userId);
-           model.addAttribute("products", user.getProducts());
+            User user = userService.findById(userId);
+            model.addAttribute("products", user.getProducts());
 
         } catch (UserNotFoundException e) {
             model.addAttribute("message", e.getMessage());
         }
 
         return "user-products";
-     }
+    }
 
-
+    //JSP does not allow to send DELETE methods
+    @PostMapping("/users/delete")
+    public String deleteUser(@RequestParam String id, Model model) {
+        try {
+            userService.deleteUser(id);
+            model.addAttribute("userDeleteMessage", "Successfully deleted");
+        } catch (UserNotFoundException e) {
+            model.addAttribute("userDeleteMessage", e.getMessage());
+        }
+        return "main-page";
+    }
 }
